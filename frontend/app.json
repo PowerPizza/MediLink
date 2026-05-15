@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "MediLink",
-    "slug": "MediLink",
+    "slug": "medilink",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,10 +20,18 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.codeless.medilink"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [],
+    "extra": {
+      "eas": {
+        "projectId": "0664421d-4e33-4c80-b555-2f74c7802214"
+      }
+    },
+    "owner": "hackhazard-medilink"
   }
 }
