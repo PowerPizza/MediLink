@@ -1,241 +1,171 @@
 # 🩺 MediLink – Smart Patient Record Management System
 
-
-
 ## 📌 Problem Statement
 
-Healthcare records are usually stored separately in different hospitals and clinics. When a patient visits another hospital, doctors often cannot access previous medical history, prescriptions, or reports quickly.
+Healthcare records are usually stored separately in different hospitals and clinics. When a patient visits another hospital, doctors often cannot access previous medical history, prescriptions, or treatment details quickly.
 
 This creates problems such as:
 
-* Repeated medical tests
-* Delays in treatment
-* Lost medical records
-* Poor emergency response
-* Increased healthcare costs
+- Repeated medical tests
+- Delays in treatment
+- Lost medical records
+- Poor emergency response
+- Increased healthcare costs
 
-MediLink solves this by creating a centralized digital healthcare record system where doctors can securely upload, access, and update patient reports using a unique Patient ID.
+MediLink solves this by creating a centralized digital healthcare record system where doctors can securely create, access, and update patient medical records using a unique patient identification system.
 
 ---
 
 # 🚀 Why This Problem Matters
 
-* Patients frequently change hospitals or doctors.
-* Paper-based reports can easily be lost or damaged.
-* Doctors need quick access to accurate medical history.
-* Emergency treatment becomes difficult without records.
+- Patients frequently change hospitals or doctors.
+- Paper-based reports can easily be lost or damaged.
+- Doctors need quick access to accurate medical history.
+- Emergency treatment becomes difficult without records.
 
-### Impact
+## Impact
 
-✅ Faster diagnosis
-✅ Better healthcare coordination
-✅ Reduced paperwork
-✅ Lower treatment costs
+✅ Faster diagnosis  
+✅ Better healthcare coordination  
+✅ Reduced paperwork  
+✅ Lower treatment costs  
 ✅ Improved patient experience
 
 ---
 
 # 💡 Proposed Solution
 
-MediLink is a healthcare management application with two separate login systems:
+MediLink is a healthcare management application with separate authentication systems for doctors and patients.
 
-## 👨‍⚕️ Doctor Login
+The platform enables secure creation, management, and controlled access of patient medical records across hospitals and clinics.
+
+---
+
+# 👨‍⚕️ Doctor Login
 
 Doctors can:
 
-* Upload patient reports
-* Access previous medical history
-* Edit patient treatment details
-* Search patients using Patient ID
+- Create patient medical reports
+- Access previous medical history
+- Append new treatment information to existing records
+- Search patients using Patient ID or biometric identification (Face Recognition, Fingerprint, etc.)
 
-## 🧑 Patient Login
+## 🔐 Secure Doctor Report Ownership
+
+- Every medical report is tied to a unique doctor pass-key.
+- Only the doctor who originally created the report can modify its treatment details later.
+- Other doctors without the pass-key cannot edit previous treatment data.
+- Other authorized doctors can only append additional medical information to the existing report.
+
+This ensures:
+
+- Data authenticity
+- Secure treatment ownership
+- Prevention of unauthorized medical modifications
+
+---
+
+# 🧑 Patient Login
 
 Patients can:
 
-* View medical reports
-* Access prescriptions and diagnosis history
-* Download reports
+- View medical history
+- Access prescriptions and diagnosis details
+- Monitor treatment records
 
-⚠️ Patients cannot modify records, ensuring security and authenticity of medical data.
+## 🔒 Patient-Controlled Access System
+
+- Medical reports remain under doctor control until the treatment/report is officially closed.
+- Once treatment is completed and the doctor closes the report, ownership and access control shifts to the patient.
+- Patients can then:
+  - Allow access to specific hospitals or doctors
+  - Block access to their medical records from particular organizations or individuals
+
+This ensures better privacy and patient-controlled healthcare access.
 
 ---
 
 # ✨ Key Features
 
-* 🔐 Separate Doctor & Patient Authentication
-* 🆔 Unique Patient ID for every patient
-* 📄 Medical Report Upload System
-* 🏥 Cross-Hospital Record Access
-* ✏️ Doctor-only Record Editing
-* 🔒 Secure Data Storage
-* 📱 Mobile-Friendly Interface
-* ☁️ Cloud-Based Medical History Access
+- 🔐 Separate Doctor & Patient Authentication
+- 🆔 Unique Patient Identification System
+- 🏥 Cross-Hospital Medical Record Access
+- ✏️ Doctor-Specific Record Modification
+- 🔑 Secure Doctor Pass-Key Based Editing
+- 👤 Biometric Patient Identification Support
+- 🔒 Patient Controlled Record Access
+- ☁️ Cloud-Based Healthcare Record System
+- 📱 Mobile-Friendly Interface
+- 🔐 Secure Data Storage & Authentication
 
 ---
 
 # 👥 Target Users
 
-* Hospitals
-* Clinics
-* Doctors
-* Patients
-* Healthcare Organizations
+- Hospitals
+- Clinics
+- Doctors
+- Patients
+- Healthcare Organizations
 
 ---
 
 # 🛠 Tech Stack
 
 ## Frontend
-
-* React Native (Expo)
+- React Native (Expo)
 
 ## Backend
-
-* Python Flask
+- Python Flask
 
 ## Database
-
-* MongoDB
+- PostgreSQL
 
 ## Cloud / Deployment
-
-* Render
-* MongoDB Atlas
+- VPS Hosting (Hostinger / DigitalOcean)
 
 ## APIs / Integrations
-
-* REST APIs
-* JWT Authentication
-* Cloudinary (for medical report storage)
+- REST APIs
+- JWT Authentication
 
 ---
 
 # 🏗 Architecture
 
-```text id="0k0hnr"
-         User Login
-              ↓
-    Authentication System
-              ↓
-   ┌───────────────────┐
-   │ Role-Based Access │
-   └───────────────────┘
-        ↓         ↓
-   Doctor       Patient
-   Dashboard    Dashboard
-        ↓         ↓
- Upload/Edit   View Reports
- Medical Data  Medical History
-        ↓
-      Flask API
-        ↓
-      MongoDB
-```
-
----
-
-# 🗺 Development Roadmap
-
-## Phase 1 - MVP
-
-* Authentication system
-* Doctor & patient login
-* Unique Patient ID generation
-
-## Phase 2 - Core Features
-
-* Medical report upload
-* Patient search system
-* Medical history dashboard
-
-## Phase 3 - Enhancements
-
-* Cloud storage integration
-* Better UI/UX
-* Security improvements
-
-## Phase 4 - Final Deployment
-
-* Hosting & deployment
-* Performance optimization
-* Final testing & bug fixing
+> Architecture diagram will be updated after final system architecture discussion.
 
 ---
 
 # ⚙️ Setup Instructions
 
-## Clone Repository
-
-```bash id="o6gtl7"
-git clone https://github.com/yourusername/medilink.git
-```
-
-## Move Into Project Folder
-
-```bash id="b6c3qq"
-cd medilink
-```
-
-## Install Frontend Dependencies
-
-```bash id="4v3vha"
-npm install
-```
-
-## Start React Native App
-
-```bash id="g47j4e"
-npx expo start
-```
-
-## Setup Backend
-
-```bash id="0g7jlwm"
-cd backend
-pip install -r requirements.txt
-```
-
-## Run Flask Server
-
-```bash id="m2q7k6"
-python app.py
-```
-
----
-
-# 🌐 Demo
-
-Live URL: Coming Soon
-
----
-
-# 🔮 Future Scope
-
-* AI-based disease prediction
-* Appointment booking system
-* Video consultation
-* QR-based patient identification
-* Multi-hospital integration
-* Blockchain-based record security
-* Multi-language support
+> Setup instructions will be added later during development.
 
 ---
 
 # 📷 App Preview
 
-The application provides a clean and user-friendly healthcare interface with separate access for doctors and patients.
+Application preview images and screenshots will be added after completion of the application UI.
 
 ---
 
-# 🤝 Contributing
+# 🌐 Demo
 
-Contributions are welcome. Feel free to fork the repository and submit pull requests.
+Live demo link will be added after deployment.
 
 ---
 
+# 🔮 Future Scope
+
+- AI-based disease prediction
+- Appointment booking system
+- Video consultation
+- QR-based patient identification
+- Multi-hospital integration
+- Blockchain-based record security
+- Multi-language support
+
+---
 
 # ❤️ Made With Passion For Better Healthcare
 
-## MediLink Team
-
-⭐ Star this repository if you found it useful!
+### MediLink Team
