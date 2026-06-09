@@ -2,6 +2,6 @@
 
 python -m venv myenv
 .\myenv\Scripts\pip.exe install -r requirements.txt
-.\myenv\Scripts\python.exe main.py
+.\myenv\Scripts\python.exe -m fastapi dev --port 8084 --host 0.0.0.0
 
 pause
