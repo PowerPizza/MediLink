@@ -11,7 +11,18 @@ pip --version
 ```
 * postgres sql + pgAdmin must be installed, press window key and search pgAdmin and try opening it, if fails to open then install properly.
 
-# Common Steps
+# Database Setup
+* Open pgAdmin
+* Right click `Databases` dropdown from left-panel.
+* Select `create > database...`
+* In first field (i.e.: database) enter `Medilink` (make sure to type exact name)
+* Click **save**
+* Now expand `Login/Group Roles` from left-panel.
+* Right click `postgres` and click `properties`.
+* Go into `defination` tab.
+* In password field type `admin` and click `save`
+
+# Basic Steps
 * Download zip of this repository or clone into your system using git-cli.
 * Extract the zip (if you have downloaded zip file).
 * Open the extracted folder.
