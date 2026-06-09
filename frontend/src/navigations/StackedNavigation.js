@@ -1,15 +1,15 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import BottomTabNavigation from "./BottomNavigation";
 import AuthNavigations from "./AuthStackNavigation";
 import AuthBaseScreen from "../screens/auth/AuthBaseScreen";
+import DoctorBottomNavigation from "./DoctorBottomNavigation";
 
 const Stack = createNativeStackNavigator();
 
-export default function StackNavigation() {
+export default function StackNavigation({isLoggedIn, role}) {
     return (
-        <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="authNavs">
+        <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName={!isLoggedIn ? "authNavs" : (role === "doctor" ? "doctorNavs" : "")}>
             <Stack.Screen name="authNavs" component={AuthNavigations} />
-            <Stack.Screen name="bottomNav" component={BottomTabNavigation} />
+            <Stack.Screen name="doctorNavs" component={DoctorBottomNavigation} />
         </Stack.Navigator>
     );
 }

@@ -5,12 +5,13 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import IconBoxBigButton from '../../components/IconBoxBigButton';
 import { COLORS } from '../../colors/colors';
+import { GRADIENTS } from '../../colors/gradients';
 
 export default function AuthBaseScreen() {
     const navigation = useNavigation();
 
     return (
-        <LinearGradient colors={["#A8E063", "#7BC96F", "#5BAE57"]} style={{ flex: 1 }} >
+        <LinearGradient colors={GRADIENTS.defaultScreenGradient} style={{ flex: 1 }} >
             <SafeAreaView style={style.container}>
                 <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                     <Text style={[style.appHeading, {color: COLORS.darkBlue}]}>medi</Text>
