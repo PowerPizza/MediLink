@@ -3,9 +3,25 @@ export const COLORS = {
     black: '#000000',
     darkGreen: '#0c8a23',
     lightGreen: '#e6ffea',
+    lightGray1: '#a0a0a0',
     lightGray: '#ececec',
     deepDarkGreen: '#124d27',
     lightGreen2: '#68f2984b',
     cyanGreen: '#08aaa1',
-    darkBlue: '#01266d'
+    darkBlue: '#01266d',
+    gray: '#757f84',
+    lazyBlack: '#222',
+    gold: '#f7ad00',
+    lightGold: '#fff2d3',
+    darkRed: '#be1818',
+    lightRed: '#ff6d6d',
+
+    msgSuccessBG: '#d4edda',
+    msgSuccessFG: '#0e8b2e',
+    msgErrorBG: '#f8d7da',
+    msgErrorFG: '#9d1c24',
+    msgInfoBG: '#cce5ff',
+    msgInfoFG: '#0040a5',
+
+    modalBlackBG: '#00000063',
 }
