@@ -26,19 +26,19 @@ export default function SignupScreen() {
     const [isProcessing, setIsProcessing] = useState(false);
 
     // User entry states to store form data.
-    const [fullName, setFullName] = useState('abc');
-    const [email, setEmailEx] = useState('chandumesh845@gmail.com');
-    const [phoneNo, setPhoneNo] = useState('2211223333');
-    const [specialization, setSpecialization] = useState('dsad');
-    const [experience, setExperience] = useState('0');
-    const [qualifications, setQualifications] = useState('da');
-    const [hospitalName, setHospitalName] = useState('dsa');
-    const [city, setCity] = useState('dsa');
-    const [hospitalAddress, setHospitalAddress] = useState('da');
+    const [fullName, setFullName] = useState('');
+    const [email, setEmailEx] = useState('');
+    const [phoneNo, setPhoneNo] = useState('');
+    const [specialization, setSpecialization] = useState('');
+    const [experience, setExperience] = useState('');
+    const [qualifications, setQualifications] = useState('');
+    const [hospitalName, setHospitalName] = useState('');
+    const [city, setCity] = useState('');
+    const [hospitalAddress, setHospitalAddress] = useState('');
     const [verificationCode, setVerificationCode] = useState('');
-    const [doctorId, setDoctorId] = useState('dsadwda');
-    const [newPin, setNewPin] = useState('444444');
-    const [newPinRe, setNewPinRe] = useState('444444');
+    const [doctorId, setDoctorId] = useState('');
+    const [newPin, setNewPin] = useState('');
+    const [newPinRe, setNewPinRe] = useState('');
     const [isCheckedPinWarn, setIsCheckedPinWarn] = useState(false);
     const [isCheckedTerms, setIsCheckedTerms] = useState(false);
 
