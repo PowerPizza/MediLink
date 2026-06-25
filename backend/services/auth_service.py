@@ -2,8 +2,9 @@ from sqlalchemy.orm import Session
 from database.database import get_db
 from sqlalchemy import select, and_
 from models.doctors_model import Doctors, BiometricMethods
+from models.patients_model import Patients, Gender
 from models.hospitals_model import Hospitals
-from schemas.auth_schemas import DoctorCreateRequest, DoctorSigninRequest
+from schemas.auth_schemas import DoctorCreateRequest, DoctorSigninRequest, PatientSignupRequest, PatientSigninRequest
 from pwdlib import PasswordHash
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -14,10 +15,17 @@ class AuthService:
     oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/signup/doctor")
 
     @staticmethod
-    def checkExistingGmail(gmail, session: Session):
-        query = select(Doctors).filter_by(gmail=gmail)
-        result = session.execute(query).fetchall()
-        return len(result) > 0
+    def checkExistingGmail(gmail, role, session: Session) -> bool:
+        if role == "doctor":
+            query = select(Doctors).filter_by(gmail=gmail)
+            result = session.execute(query).fetchall()
+            return len(result) > 0
+        elif role == "patient":
+            query = select(Patients).filter_by(gmail=gmail)
+            result = session.execute(query).fetchall()
+            return len(result) > 0
+        else:
+            raise Exception("Invalid role.")
 
     @staticmethod
     def createDoctor(create_request: DoctorCreateRequest, session: Session) -> str:
@@ -80,6 +88,52 @@ class AuthService:
             return AuthService.generateJWT(doctor.full_name, doctor.id, "doctor")
         else:
             raise Exception("Signin failed - No user with this gmail was found.")
+
+
+    @staticmethod
+    def signupPatient(signup_request: PatientSignupRequest, session: Session) -> str:
+        try:
+            hasher_ = PasswordHasher()
+
+            patient = Patients()
+            patient.gender = signup_request.gender
+            patient.phone_no = signup_request.phone_no
+            patient.pfp_url = signup_request.pfp_url
+            patient.age = signup_request.age
+            patient.gmail = str(signup_request.gmail)
+            patient.password = hasher_.get_password_hash(signup_request.password)
+            patient.fullname = signup_request.fullname
+            patient.patient_id = signup_request.patient_id
+            patient.is_active = signup_request.is_active
+
+            session.add(patient)
+            session.commit()
+            session.refresh(patient)
+
+            return AuthService.generateJWT(patient.fullname, patient.id, "patient")
+        except BaseException as e:
+            print("Error while patient signup : ", e)
+            session.rollback()
+            raise e
+
+
+    @staticmethod
+    def signinPatient(signin_request: PatientSigninRequest, session: Session) -> str:
+        hasher_ = PasswordHasher()
+        patient_fetch_statement = (select(Patients)
+                           .where(
+                                and_(
+                                    Patients.gmail == signin_request.gmail
+                                )
+                           ))
+        result = session.execute(patient_fetch_statement)
+        patient_ = result.scalar_one_or_none()
+        if patient_:
+            if not hasher_.verify_password(signin_request.password, patient_.password):
+                raise Exception("Login failed - Invalid gmail or password.")
+            return AuthService.generateJWT(patient_.fullname, patient_.id, "patient")
+        else:
+            raise Exception("Login failed - No user with this gmail found.")
 
 
     @staticmethod

@@ -10,6 +10,8 @@ from routes.auth import auth_router
 # Importing models - the corresponding table will be automatically created by sqlalchemy engine if import of associated model is present.
 from models.hospitals_model import Hospitals
 from models.doctors_model import Doctors
+from models.patients_model import Patients
+from models.reports_model import Reports
 
 # function will run at startup and end of application
 @asynccontextmanager

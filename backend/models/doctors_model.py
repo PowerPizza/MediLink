@@ -30,7 +30,7 @@ class Doctors(Base):
     hospital_id: Mapped[int] = mapped_column(ForeignKey("hospitals.id"))
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
-    is_active: Mapped[bool] = mapped_column(Boolean, default=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
     def __repr__(self):
         return f"Doctors(id={self.id!r}, full_name={self.full_name!r}, hospital_id={self.hospital_id!r})"

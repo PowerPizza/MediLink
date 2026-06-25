@@ -25,4 +25,20 @@ export const COMMON_STYLES = StyleSheet.create({
         marginBottom: 8,
         elevation: 2,
     },
+
+    modalOverlay: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        backgroundColor: COLORS.modalBlackBG,
+        zIndex: 2,
+        justifyContent: 'center',
+        padding: 4
+    },
+    modalContent: {
+        backgroundColor: COLORS.white,
+        padding: 5
+    }
 });
