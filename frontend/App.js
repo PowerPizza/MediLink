@@ -73,8 +73,11 @@ export default function App() {
       if (response.verified) {
         if (response.role === "doctor") {
           setIsLoggedIn(true);
-          setRole(response.role);
         }
+        if (response.role === "patient") {
+          setIsLoggedIn(true);
+        }
+        setRole(response.role || "");
       }
       setTimeout(()=>{
         setShowSplashScreen(false);

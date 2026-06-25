@@ -59,9 +59,33 @@ class ApiClient {
     }
 
 
-    async checkGmailExists(gmail) {
+    async signupPatient(data) {
         try {
-            const response = await this.client.get(`${this.baseUrl}/mail/exists?${(new URLSearchParams({'gmail': gmail})).toString()}`);
+            const response = await this.client.post(this.baseUrl+'/auth/signup/patient', data);
+            return {status: response.status, data: response.data}
+        }
+        catch (err) {
+            console.log("Error while signing up as patient : error - ", err);
+            return err
+        }
+    }
+
+
+    async signinPatient(data) {
+        try {
+            const response = await this.client.post(this.baseUrl+'/auth/signin/patient', data);
+            return {status: response.status, data: response.data};
+        }
+        catch (err) {
+            console.log("Error while patient login : ", err);
+            return err
+        }
+    }
+
+
+    async checkGmailExists(gmail, role) {
+        try {
+            const response = await this.client.get(`${this.baseUrl}/mail/exists?${(new URLSearchParams({gmail, role})).toString()}`);
             return response.data?.exists || false;
         }
         catch (err) {
