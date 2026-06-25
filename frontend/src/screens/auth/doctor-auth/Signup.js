@@ -195,7 +195,7 @@ export default function SignupScreen() {
 
     async function verifyGmailExistance() {
         if (!email || !email.endsWith('@gmail.com')) return;
-        const exists = await apiClient.checkGmailExists(email);
+        const exists = await apiClient.checkGmailExists(email, "doctor");
         if (exists) {
             Toast.show({
                 text2: 'Gmail already exists',
