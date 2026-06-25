@@ -19,5 +19,11 @@ async def send_verification_code(request: VerificationCodeSendRequest):
     return response
 
 @mail_router.get("/exists/")
-def mail_exists(gmail: EmailStr, db: Session = Depends(get_db)):
-    return {"success": True, "exists": AuthService.checkExistingGmail(str(gmail), db)}
+def mail_exists(gmail: EmailStr, role: str, db: Session = Depends(get_db)):
+    response = {"success": True, "exists": False}
+    try:
+        response["exists"] = AuthService.checkExistingGmail(str(gmail), role, db)
+    except BaseException as e:
+        response["success"] = False
+        response["message"] = str(e)
+    return response

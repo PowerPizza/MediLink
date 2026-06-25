@@ -18,7 +18,9 @@ export default function SubmitButton({title = "Submit", onPress, loading = false
       {loading ? (
         <ActivityIndicator size="small" color={COLORS.white} />
       ) : (
+        title ?
         <Text style={styles.buttonText}>{title}</Text>
+        : null
       )}
 
       {children}
