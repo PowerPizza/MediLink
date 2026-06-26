@@ -15,7 +15,7 @@ import { Checkbox } from 'expo-checkbox';
 import AppContext from '../../../contexts/AppContext';
 import { AsyncStorageDriver } from '../../../data/AsyncStorageDriver';
 import NumericTypeInput from '../../../components/auth-entries/NumericTypeInput';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 
 export default function SignupScreen() {
     // Other UI and feature control states

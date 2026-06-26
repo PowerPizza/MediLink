@@ -31,7 +31,7 @@ class AuthService:
     def createDoctor(create_request: DoctorCreateRequest, session: Session) -> str:
         hasher_ = PasswordHasher()
         try:
-            if AuthService.checkExistingGmail(str(create_request.gmail), session):
+            if AuthService.checkExistingGmail(str(create_request.gmail), "doctor", session):
                 raise Exception('Gmail already exists.')
 
             hospital = Hospitals()
