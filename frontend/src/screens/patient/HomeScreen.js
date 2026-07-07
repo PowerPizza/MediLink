@@ -2,31 +2,61 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { COMMON_STYLES } from '../../commons/common-styles';
 import { COLORS } from '../../colors/colors';
+import apiClient from '../../utils/api-client';
+import { useEffect, useState } from 'react';
+import { AsyncStorageDriver } from '../../data/AsyncStorageDriver';
+import Toast from 'react-native-toast-message';
+import LoaderOverlay from '../../components/LoaderOverlay';
+import QRCode from 'react-native-qrcode-svg';
 
 export default function HomeScreen() {
-    const patientData = {
-        name: "John Doe",
-        gender: "Male",
-        age: 28,
-        email: "johndoe123@gmail.com",
-        patientId: "PT-2024-001234"
-    };
+    const [patientData, setPatientData] = useState(null);
 
+    useEffect(()=>{
+        (async ()=>{
+            try {
+                const cached_user_data = JSON.parse(await AsyncStorageDriver.getItem('user_data'));
+                if (!cached_user_data) throw "Patient data not found.";
+                setPatientData(cached_user_data);
+                console.log("Patient data found in cache.");
+            }
+            catch (_) {
+                try {
+                    const latest_user_data = await apiClient.getPatientData();
+                    await AsyncStorageDriver.setItem('user_data', JSON.stringify(latest_user_data));
+                    setPatientData(latest_user_data);
+                    console.log("Patient data didn't found in cache, fetching from backend.");
+                }
+                catch (err) {
+                    console.log(err);
+                    Toast.show({
+                        text2: "Failed to fetch or cache user data : "+err,
+                        type: 'error'
+                    });
+                }
+            }
+        })();
+    }, []);
+
+    if (!patientData) {
+        return (
+            <LoaderOverlay />
+        )
+    }
     return (
         <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
             <View style={COMMON_STYLES.screenContent}>
-                {/* Avatar */}
                 <View style={styles.avatarSection}>
                     <View style={styles.avatarContainer}>
                         <FontAwesome name="user" size={48} color={COLORS.darkGreen} />
                     </View>
                     
                     <View style={styles.infoSection}>
-                        <Text style={styles.patientName}>{patientData.name}</Text>
+                        <Text style={styles.patientName}>{patientData.fullname}</Text>
                         <Text style={styles.patientMetaInfo}>
                             {patientData.gender} • {patientData.age} Years
                         </Text>
-                        <Text style={styles.patientEmail}>{patientData.email}</Text>
+                        <Text style={styles.patientEmail}>{patientData.gmail}</Text>
                     </View>
                 </View>
 
@@ -34,7 +64,7 @@ export default function HomeScreen() {
 
                 <View style={styles.qrSection}>
                     <View style={styles.qrPlaceholder}>
-                        <Text style={styles.qrPlaceholderText}>QR Code</Text>
+                        <QRCode size={130} value={patientData.patient_id} />
                     </View>
                     <Text style={styles.qrInstructionText}>
                         Show this QR to your doctor to connect your profile
@@ -45,7 +75,7 @@ export default function HomeScreen() {
                     <FontAwesome name="id-card" size={28} color={COLORS.darkGreen} style={styles.idIcon} />
                     <View style={styles.idTextContainer}>
                         <Text style={styles.idLabel}>Patient ID</Text>
-                        <Text style={styles.idValue}>{patientData.patientId}</Text>
+                        <Text style={styles.idValue}>{patientData.patient_id}</Text>
                     </View>
                 </View>
             </View>

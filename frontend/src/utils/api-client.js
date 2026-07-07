@@ -117,6 +117,17 @@ class ApiClient {
         const presisting_token = await AsyncStorageDriver.getItem("jwt");
         return !presisting_token;
     }
+
+    async getPatientData() {
+        try {
+            const response = await this.client.get(`/patient`);
+            return response.data;
+        }
+        catch (error) {
+            console.log("Error : Failed to fetch patient data - loggin credentials not found.");
+            return {}
+        }
+    }
 }
 
 const apiClient = new ApiClient();

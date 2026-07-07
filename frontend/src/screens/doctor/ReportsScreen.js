@@ -9,6 +9,7 @@ import MedicalReportCard from "../../components/MedicalReportCard";
 import ExpandableView from "../../components/ExpandableView";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
+import { THEME } from "../../themes/theme";
 
 function CreateReportModal({ visible, title, description, disease, selectedPatient, patientOptions, patientSelectOpen, onTitleChange, onDescriptionChange, onDiseaseChange, onSelectPatient, onTogglePatientSelect, onCreate, onClose }) {
     if (!visible) return null;
@@ -31,10 +32,10 @@ function CreateReportModal({ visible, title, description, disease, selectedPatie
                         placeholder="Enter description"
                         value={description}
                         onChangeText={onDescriptionChange}
-                        style={[styles.textAreaWrapper]}
-                        multiline
+                        style={styles.textAreaWrapper}
+                        multiline={true}
                         numberOfLines={4}
-                        textAlignVertical="top"
+                        textAlignVertical={'top'}
                     />
 
                     <Text style={styles.fieldLabel}>Disease Name</Text>
@@ -46,12 +47,17 @@ function CreateReportModal({ visible, title, description, disease, selectedPatie
                     />
 
                     <Text style={styles.fieldLabel}>Patient</Text>
-                    <TouchableOpacity style={styles.selectInput} onPress={onTogglePatientSelect} activeOpacity={0.8}>
-                        <Text style={[styles.selectText, !selectedPatient ? styles.placeholderText : null]}>
-                            {selectedPatient ? selectedPatient.label : 'Select patient'}
-                        </Text>
-                        <FontAwesome name={patientSelectOpen ? "chevron-up" : "chevron-down"} size={16} color={COLORS.gray} />
-                    </TouchableOpacity>
+                    <View style={{flexDirection: 'row', gap: 6, alignItems: 'center'}}>
+                        <TouchableOpacity style={styles.selectInput} onPress={onTogglePatientSelect} activeOpacity={0.8}>
+                            <Text style={[styles.selectText, !selectedPatient ? styles.placeholderText : null]}>
+                                {selectedPatient ? selectedPatient.label : 'Select patient'}
+                            </Text>
+                            <FontAwesome name={patientSelectOpen ? "chevron-up" : "chevron-down"} size={16} color={COLORS.gray} />
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.6}>
+                            <FontAwesome name="qrcode" size={42} color={COLORS.darkGreen} />
+                        </TouchableOpacity>
+                    </View>
 
                     {patientSelectOpen ? (
                         <View style={styles.selectOptions}>
@@ -228,6 +234,7 @@ const styles = StyleSheet.create({
         paddingBottom: 12,
     },
     selectInput: {
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
