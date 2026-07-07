@@ -128,6 +128,18 @@ class ApiClient {
             return {}
         }
     }
+
+    async getAllPatientIds() {
+        try {
+            const response = await this.client.get("/patient/all_patient_ids");
+            return response?.data || [];
+        }
+        catch(error) {
+            console.log("Error : Failed to fetch all patient ids - "+error);
+            return [];
+        }
+    }
+    
 }
 
 const apiClient = new ApiClient();

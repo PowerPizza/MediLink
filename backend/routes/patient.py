@@ -30,3 +30,11 @@ def onGetPatientInfo(user=Depends(auth_service.verifyJWT), db: Session = Depends
         return response
     else:
         return Response("Unable to find patient info.", 404)
+
+@patient_router.get("/all_patient_ids")
+def onGetAllPatientIds(user=Depends(auth_service.verifyJWT), db: Session=Depends(get_db)):
+    statement = select(Patients.patient_id).where(Patients.is_active == True)
+    response = db.execute(statement).all()
+    response = list(map(lambda t: t[0], response))
+    print(response)
+    return response
