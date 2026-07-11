@@ -22,7 +22,7 @@ export default function TextTypeInput({iconName, value, onChangeText, placeholde
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor="#A8A8A8"
-        style={styles.input}
+        style={[styles.input, props?.multiline ? {textAlignVertical: 'top'} : {}]}
         {...props}
       />
     </View>

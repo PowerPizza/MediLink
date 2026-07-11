@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     database_driver_prefix: str
     database_connection_url: str
     super_secret_key: str
+    supabase_url: str
+    supabase_secret_key: str
 
     model_config = SettingsConfigDict(env_file=BASE_DIR.joinpath(".env"), env_file_encoding="utf-8", extra="ignore")
 

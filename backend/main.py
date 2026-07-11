@@ -3,9 +3,13 @@ from fastapi import FastAPI, APIRouter, Request, Depends, HTTPException
 from contextlib import asynccontextmanager
 
 from database.database import Base, db_engine
+from database.cloud_storage import cloud_storage
 
 from routes.mail import mail_router
 from routes.auth import auth_router
+from routes.patient import patient_router
+from routes.reports import reports_route
+from routes.doctor import doctor_router
 
 # Importing models - the corresponding table will be automatically created by sqlalchemy engine if import of associated model is present.
 from models.hospitals_model import Hospitals
@@ -49,6 +53,9 @@ def status():
 
 router.include_router(mail_router)
 router.include_router(auth_router)
+router.include_router(patient_router)
+router.include_router(reports_route)
+router.include_router(doctor_router)
 
 app.include_router(router)
 

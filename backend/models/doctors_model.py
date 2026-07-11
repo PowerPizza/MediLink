@@ -1,9 +1,10 @@
 from database.database import Base
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import BigInteger, String, Integer, ForeignKey, DateTime, func, Boolean
 from datetime import datetime
 from enum import Enum
 from typing import Optional
+from models.hospitals_model import Hospitals
 
 class BiometricMethods(Enum):
     FINGER_PRINT = "finger_print"
@@ -31,6 +32,8 @@ class Doctors(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    hospital: Mapped[Hospitals] = relationship()
 
     def __repr__(self):
         return f"Doctors(id={self.id!r}, full_name={self.full_name!r}, hospital_id={self.hospital_id!r})"

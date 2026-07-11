@@ -6,6 +6,7 @@ import { COMMON_STYLES } from '../commons/common-styles';
 
 export default function MedicalReportCard({
     reportId = '12345',
+    title = 'Title',
     patientName = 'Patient Name',
     disease = 'Condition',
     createdBy = 'Doctor Name',
@@ -36,7 +37,11 @@ export default function MedicalReportCard({
                 </View>
 
                 <View style={styles.infoColumn}>
-                    <Text style={styles.patientName}>{patientName}</Text>
+                    <Text style={styles.title}>{title}</Text>
+                    <View style={styles.detailRow}>
+                        <Text style={styles.label}>Patient</Text>
+                        <Text style={styles.value}>{patientName}</Text>
+                    </View>
                     <View style={styles.detailRow}>
                         <Text style={styles.label}>Disease</Text>
                         <Text style={styles.value}>{disease}</Text>
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
     infoColumn: {
         flex: 1,
     },
-    patientName: {
+    title: {
         fontSize: 18,
         fontWeight: '700',
         color: COLORS.lazyBlack,

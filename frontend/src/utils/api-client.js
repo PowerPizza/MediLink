@@ -117,6 +117,83 @@ class ApiClient {
         const presisting_token = await AsyncStorageDriver.getItem("jwt");
         return !presisting_token;
     }
+
+    async getPatientData() {
+        try {
+            const response = await this.client.get(`/patient`);
+            return response.data;
+        }
+        catch (error) {
+            console.log("Error : Failed to fetch patient data - loggin credentials not found.");
+            return {}
+        }
+    }
+
+    async getAllPatientIds() {
+        try {
+            const response = await this.client.get("/patient/all_patient_ids");
+            return response?.data || [];
+        }
+        catch(error) {
+            console.log("Error : Failed to fetch all patient ids - "+error);
+            return [];
+        }
+    }
+
+    async getPatientInfoByPID(patient_id) {
+        try {
+            const response = await this.client.get(`/patient/${patient_id}`);
+            return {status: response.status, data: response?.data};
+        }
+        catch (error) {
+            console.log("Error : Failed to fetch information of patient at given patient id - "+error);
+            return {status: -1};
+        }
+    }
+    
+    async sendReportFile(report_file) {
+        try {
+            const response = await this.client.post("/reports/save-report-file", report_file, {headers: {'Content-Type': 'multipart/form-data'}})
+            return {success: response?.status === 200, data: response?.data};
+        }
+        catch (error) {
+            console.log("Error : Failed to send report file at backend - ", error);
+            return {success: false, message: error};
+        }
+    }
+
+    async saveReportData(report_data) {
+        try {
+            const response = await this.client.post("/reports/save-report-data", report_data);
+            return {success: response?.status === 200, data: response?.data};
+        }
+        catch (error) {
+            console.log("Error : Failed to save report data at backend - ", error);
+            return  {success: false, message: error};
+        }
+    }
+
+    async getDoctorData() {
+        try {
+            const response = await this.client.get(`/doctor`);
+            return response.data;
+        }
+        catch (error) {
+            console.log("Error : Failed to fetch doctor data - loggin credentials not found.");
+            return {}
+        }
+    }
+
+    async getAllPartialReportList() {
+        try {
+            const response = await this.client.get("/reports/all/partial-report");
+            return response?.data ?? [];
+        }
+        catch (error) {
+            console.log("Error : Failed to get partial reports data - ", error);
+            return [];
+        }
+    }
 }
 
 const apiClient = new ApiClient();

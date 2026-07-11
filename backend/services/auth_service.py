@@ -167,3 +167,7 @@ class PasswordHasher:
         return self.hasher.verify(password, hash_)
 
 auth_service = AuthService()
+
+if __name__ == '__main__':
+    hsr_ = PasswordHasher()
+    print(hsr_.get_password_hash("123456789"))
