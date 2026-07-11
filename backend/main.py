@@ -1,3 +1,8 @@
+if __name__ == '__main__':
+    # Start the api server auto-automatically when file is run using python - ONLY FOR DEV.
+    import os
+    os.system("fastapi dev --port 8084 --host 0.0.0.0")
+
 import jwt
 from fastapi import FastAPI, APIRouter, Request, Depends, HTTPException
 from contextlib import asynccontextmanager
@@ -58,7 +63,3 @@ router.include_router(reports_route)
 router.include_router(doctor_router)
 
 app.include_router(router)
-
-if __name__ == '__main__':
-    import os
-    os.system("fastapi dev --port 8084 --host 0.0.0.0")
