@@ -2,3 +2,4 @@
 myenv
 test
 __pycache__/
+.env
