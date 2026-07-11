@@ -15,6 +15,8 @@ export const COLORS = {
     lightGold: '#fff2d3',
     darkRed: '#be1818',
     lightRed: '#ff6d6d',
+    transparent: '#00000000',
+    dodgerBlue: '#3e82fc',
 
     msgSuccessBG: '#d4edda',
     msgSuccessFG: '#0e8b2e',

@@ -2,7 +2,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { COLORS } from "../colors/colors";
 import { THEME } from "../themes/theme";
-import DoctorHomeScreen from "../screens/doctor/DoctorHomeScreen";
+import HomeScreen from "../screens/doctor/HomeScreen";
 import ReportsScreen from "../screens/doctor/ReportsScreen";
 import ProfileScreen from "../screens/doctor/ProfileScreen";
 import { createStackNavigator } from '@react-navigation/stack';
@@ -37,7 +37,7 @@ export default function DoctorBottomNavigation() {
             tabBarStyle: {backgroundColor: THEME.light.bottomBarBG, borderRadius: 18},
             ...appBarTheme
         }}>
-            <Tab.Screen name="Home" component={DoctorHomeScreen} options={{ tabBarIcon: TabIconMaker('home') }} />
+            <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarIcon: TabIconMaker('home') }} />
             <Tab.Screen name="ReportNavs" component={ReportsNavigationStack} options={{tabBarIcon: TabIconMaker('sticky-note'), tabBarLabel: "Reports", headerTitle: "Reports" }} />
             <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarIcon: TabIconMaker('user-circle-o') }} />
         </Tab.Navigator>

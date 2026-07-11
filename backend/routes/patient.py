@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Response, Request
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from database.database import get_db
@@ -38,3 +38,24 @@ def onGetAllPatientIds(user=Depends(auth_service.verifyJWT), db: Session=Depends
     response = list(map(lambda t: t[0], response))
     print(response)
     return response
+
+@patient_router.get("/{patient_id}")
+def getPatientBasicInfoById(patient_id: str, user=Depends(auth_service.verifyJWT), db: Session=Depends(get_db)):
+    if user["role"] != 'doctor':
+        return Response("Access Denied - Endpoint is only for doctors", 401)
+
+    statement = select(Patients).where(Patients.patient_id == patient_id)
+    patient = db.execute(statement).scalar_one_or_none()
+    if patient:
+        return PatientResponse(
+            id=patient.id,
+            pfp_url=patient.pfp_url,
+            fullname=patient.fullname,
+            gmail=patient.gmail,
+            patient_id=patient.patient_id,
+            phone_no=patient.phone_no,
+            age=patient.age,
+            gender=str(patient.gender)
+        )
+    else:
+        return Response("Patient not found!", 404)

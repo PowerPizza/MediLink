@@ -1,8 +1,8 @@
 import { View, Text, useWindowDimensions, StyleSheet, ScrollView } from "react-native";
 import { Canvas, Circle, Group, Path, Rect, Skia } from '@shopify/react-native-skia';
 import { COLORS } from "../../colors/colors";
-import { useDerivedValue, useSharedValue } from "react-native-reanimated";
-import { useEffect, useRef, useState } from "react";
+import { useAnimatedReaction, useDerivedValue, useSharedValue } from "react-native-reanimated";
+import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,11 +11,21 @@ import { FontAwesome } from '@expo/vector-icons';
 import LeftPanel from "./create-report-screen-parts/LeftPanel";
 import RightPanel from "./create-report-screen-parts/RightPanel";
 import CustomTopBar from "./create-report-screen-parts/CustomTopBar";
+import apiClient from "../../utils/api-client";
+import {File, Paths} from 'expo-file-system';
+import { AsyncStorageDriver } from "../../data/AsyncStorageDriver";
+import Toast from "react-native-toast-message";
+import { THEME } from "../../themes/theme";
 
-function DrawableArea({currentTool}) {
+const DrawableContext = createContext({
+    getStrokePoints: ()=>{},
+});
+
+function DrawableArea({currentTool, strokeTrace, setStrokeTrace}) {
+    const drawCtx = useContext(DrawableContext);
+
     const points = useSharedValue([]);
     const lineOfPoints = useDerivedValue(()=>{
-        console.log("Create line again...");
         const line = Skia.Path.Make();
         for (let i = 0; i < points.value.length; i++) {
             if (points.value[i].state === "begin") {
@@ -150,6 +160,12 @@ function DrawableArea({currentTool}) {
         default:
             break;
     }
+
+    useEffect(()=>{
+        drawCtx.getStrokePoints = ()=>{
+            return points.value;
+        }
+    }, []);
     
     return (
         <ScrollView style={style.drawContainer} scrollEnabled={false}>
@@ -168,10 +184,55 @@ function DrawableArea({currentTool}) {
     )
 }
 
-export default function CreateReportScreen() {
+export default function CreateReportScreen({route}) {
+    const [reportData, setReportData] = useState(route.params);
     const {width, height} = useWindowDimensions();
     const navigator = useNavigation();
     const [currentTool, setCurrentTool] = useState('pen');
+    const [strokeTrace, setStrokeTrace] = useState([]);
+    const [reportId, setReportId] = useState([]);
+
+    const drawCtx = useContext(DrawableContext);
+
+    const onSaveReport = async ()=>{
+        const report_draw_data = {
+            strokes: drawCtx.getStrokePoints(),
+        }
+
+        // Save report file in cloud storage
+        const dummy_file_name = (new Date()).toISOString()+".report";
+        const report_file = new File(Paths.cache, dummy_file_name);
+        await report_file.write(JSON.stringify(report_draw_data));
+
+        const form_data = new FormData();
+        form_data.append('file', {
+            uri: report_file.uri,
+            name: dummy_file_name,
+            type: "application/octet-stream",
+        });
+        const file_save_resp = await apiClient.sendReportFile(form_data);
+        
+        // If file is saved then save report data
+        if (file_save_resp?.success) {
+            const doctor_info = JSON.parse(await AsyncStorageDriver.getItem("user_data"));
+            const report_data = {
+                title: reportData.title,
+                disease: reportData.diseaseName,
+                patient_id: reportData.patient.id,
+                doctor_id: doctor_info.id,
+                hospital_id: doctor_info.hospital.id,
+                report_file_name: file_save_resp.data.report_file_name
+            }
+            const data_save_resp = await apiClient.saveReportData(report_data);
+            if (data_save_resp.success) {
+                setReportId(report_data.report_file_name);
+                Toast.show({text2: 'Successfully saved report', type: 'success'});
+            }
+            else {
+                Toast.show({text2: `Failed to save report.\nError: ${data_save_resp?.message || data_save_resp?.data}`, type: 'error'});
+            }
+        }
+    }
 
     const autoScreenOrientation = async ()=>{
         if (width > height || 1) {
@@ -194,16 +255,25 @@ export default function CreateReportScreen() {
             headerShown: false
         });
         navigator.getParent()?.setOptions({
-            tabBarStyle: {display: 'none'},
-        })
+            tabBarStyle: {display: 'none', backgroundColor: THEME.light.bottomBarBG, borderRadius: 18},
+        });
+
+        return ()=>{
+            navigator.setOptions({
+                headerShown: true
+            });
+            navigator.getParent()?.setOptions({
+                tabBarStyle: {display: 'flex', backgroundColor: THEME.light.bottomBarBG, borderRadius: 18},
+            });
+        }
     }, [navigator]);
 
     return (
         <SafeAreaView style={style.container}>
-            <CustomTopBar />
+            <CustomTopBar title={reportData?.title} patientData={reportData?.patient} onSave={onSaveReport} />
             <View style={{flexDirection: 'row', flex: 1, gap: 2}}>
                 <LeftPanel onSelectTool={setCurrentTool} selectedTool={currentTool} />
-                <DrawableArea currentTool={currentTool} />
+                <DrawableArea currentTool={currentTool} strokeTrace={strokeTrace} setStrokeTrace={setStrokeTrace} />
                 <RightPanel />
             </View>
         </SafeAreaView>

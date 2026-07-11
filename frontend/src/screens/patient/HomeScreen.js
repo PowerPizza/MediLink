@@ -17,6 +17,7 @@ export default function HomeScreen() {
             try {
                 const cached_user_data = JSON.parse(await AsyncStorageDriver.getItem('user_data'));
                 if (!cached_user_data) throw "Patient data not found.";
+                if ((cached_user_data.fullname ?? 'undf') === 'undf') throw "Patient data not found.";  // THIS MUST BE REMOVED AND PROPER ROLE BASED IDENTIFICATION OF STORED CACHE DATA IS NEEDED.
                 setPatientData(cached_user_data);
                 console.log("Patient data found in cache.");
             }

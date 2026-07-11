@@ -1,15 +1,28 @@
 from pydantic import BaseModel
 from datetime import datetime
 
+class PatientRequest(BaseModel):
+    id: int = None
+    fullname: str = None
+    gender: str = None
+    phone_no: str = None
+    pfp_url: str = None
+    gmail: str = None
+    patient_id: str = None
+    age: int = None
+    created_at: datetime = None
+    updated_at: datetime = None
+    is_active: bool = None
+
 class PatientResponse(BaseModel):
-    id: int
-    fullname: str
-    gender: str
-    phone_no: str
-    pfp_url: str
-    gmail: str
-    patient_id: str
-    age: int
-    created_at: datetime
-    updated_at: datetime
-    is_active: bool
+    id: int = None
+    fullname: str = None
+    gender: str = None
+    phone_no: str = None
+    pfp_url: str = None
+    gmail: str = None
+    patient_id: str = None
+    age: int = None
+    created_at: datetime = None
+    updated_at: datetime = None
+    is_active: bool = None
