@@ -131,9 +131,12 @@ export default function SignupScreen() {
         Toast.show({ text2: `Verification code sent to ${gmail}`, type: "success" });
         startCodeCooldown();
       }
+      else {
+        throw "status : "+resp?.status;
+      }
     } catch (error) {
       console.log("Verification code send failed", error);
-      Toast.show({ text2: "Could not send verification code", type: "error" });
+      Toast.show({ text2: `Could not send verification code: ${error}`, type: "error" });
     }
   };
 

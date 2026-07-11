@@ -82,8 +82,14 @@ export default function SignupScreen() {
                     type: 'success'
                 });
             }
+            else {
+                throw "status: "+resp?.status;
+            }
         }).catch(err => {
-            console.log(err);
+            Toast.show({
+                text2: `Failed to send verification code - error: ${err}`,
+                type: 'success'
+            });
         });
         console.log(actualVerificationCode.current);
         startCodeCooldown();
