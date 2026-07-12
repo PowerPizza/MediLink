@@ -28,7 +28,7 @@ class ApiClient {
 
     async sendVerificationCode(to, code) {
         try {
-            const response = await this.client.post(this.baseUrl+'/mail/verification-code', {to, code});
+            const response = await this.client.post('/mail/verification-code', {to, code});
             return {status: response.status, data: response.data}
         } catch (err) {
             console.error("Failed to send verification code : error - ", err);
@@ -38,7 +38,7 @@ class ApiClient {
 
     async signupDoctor(data) {
         try {
-            const response = await this.client.post(this.baseUrl+'/auth/signup/doctor', data);
+            const response = await this.client.post('/auth/signup/doctor', data);
             return {status: response.status, data: response.data}
         }
         catch (err) {
@@ -49,7 +49,7 @@ class ApiClient {
 
     async signinDoctor(data) {
         try {
-            const response = await this.client.post(this.baseUrl+'/auth/signin/doctor', data);
+            const response = await this.client.post('/auth/signin/doctor', data);
             return {status: response.status, data: response.data};
         }
         catch (err) {
@@ -61,7 +61,7 @@ class ApiClient {
 
     async signupPatient(data) {
         try {
-            const response = await this.client.post(this.baseUrl+'/auth/signup/patient', data);
+            const response = await this.client.post('/auth/signup/patient', data);
             return {status: response.status, data: response.data}
         }
         catch (err) {
@@ -73,7 +73,7 @@ class ApiClient {
 
     async signinPatient(data) {
         try {
-            const response = await this.client.post(this.baseUrl+'/auth/signin/patient', data);
+            const response = await this.client.post('/auth/signin/patient', data);
             return {status: response.status, data: response.data};
         }
         catch (err) {
@@ -85,7 +85,7 @@ class ApiClient {
 
     async checkGmailExists(gmail, role) {
         try {
-            const response = await this.client.get(`${this.baseUrl}/mail/exists?${(new URLSearchParams({gmail, role})).toString()}`);
+            const response = await this.client.get(`/mail/exists?${(new URLSearchParams({gmail, role})).toString()}`);
             return response.data?.exists || false;
         }
         catch (err) {
@@ -101,7 +101,7 @@ class ApiClient {
                 console.log("Warning : Verification request is not being send due to token : ", this.token)
                 return {verified: false}
             }
-            const response = await this.client.get(`${this.baseUrl}/auth/verify`);
+            const response = await this.client.get(`/auth/verify`);
             return response.data;
         }
         catch (err) {
