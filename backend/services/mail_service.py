@@ -13,6 +13,9 @@ conf = ConnectionConfig(
     MAIL_SSL_TLS=False,
     MAIL_STARTTLS=True
 )
+print("Creating SMTP connection...")
+mailing_server = FastMail(conf)
+print("SMTP Connection created successfully.")
 
 async def sendVerificationCode(to: str, code: str):
     template = f"""
@@ -160,8 +163,7 @@ async def sendVerificationCode(to: str, code: str):
         subtype=MessageType.html
     )
 
-    mail = FastMail(conf)
-    await mail.send_message(message)
+    await mailing_server.send_message(message)
 
 if __name__ == '__main__':
     import asyncio
